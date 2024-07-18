@@ -30,12 +30,35 @@ public class Employee {
     @Column(name = "last_name")
     private String lastName;
 
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", manager=" + manager +
+                ", level=" + level +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", email='" + email + '\'' +
+                ", birthDate='" + birthDate + '\'' +
+                ", workType=" + workType +
+                ", contractType=" + contractType +
+                ", team=" + team +
+                ", startDate='" + startDate + '\'' +
+                ", endDate='" + endDate + '\'' +
+                ", personalInformation=" + personalInformation +
+                ", otherInformation=" + otherInformation +
+                ", projects=" + projects +
+                '}';
+    }
+
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "manager_id")
     private Manager manager;
 
     @Column(name = "levell")
+    @Enumerated(EnumType.STRING)
     private Level level;
 
     @Column(name = "phone_number")
@@ -48,12 +71,16 @@ public class Employee {
     private String birthDate;
 
     @Column(name = "work_type")
+    @Enumerated(EnumType.STRING)
     private WorkType workType;
 
+
     @Column(name = "contract_type")
+    @Enumerated(EnumType.STRING)
     private ContractType contractType;
 
     @Column(name = "team")
+    @Enumerated(EnumType.STRING)
     private Team team;
 
     @Column(name = "start_date")
@@ -68,8 +95,6 @@ public class Employee {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "other_information_id")
     private OtherInformation otherInformation;
-    @Column(name = "project_id")
-    private int projectId;
 
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE,
@@ -204,13 +229,7 @@ public class Employee {
     }
 
 
-    public int getProjectId() {
-        return projectId;
-    }
 
-    public void setProjectId(int projectId) {
-        this.projectId = projectId;
-    }
 
     public PersonalInformation getPersonalInformation() {
         return personalInformation;
@@ -236,23 +255,4 @@ public class Employee {
         this.projects = projects;
     }
 
-    @Override
-    public String toString() {
-        return "Employee{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", manager=" + manager +
-                ", level=" + level +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", email='" + email + '\'' +
-                ", birthDate='" + birthDate + '\'' +
-                ", workType=" + workType +
-                ", contractType=" + contractType +
-                ", team=" + team +
-                ", startDate='" + startDate + '\'' +
-                ", endDate='" + endDate + '\'' +
-                ", projectId=" + projectId +
-                '}';
-    }
 }
