@@ -11,13 +11,13 @@ CREATE TABLE employee (
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
     manager_id INT,
-    levell ENUM('L0', 'L1', 'L2', 'L3', 'L4', 'L5'),
+    levell ENUM('L0', 'L1', 'L2', 'L3', 'L4', 'L5') ,
     phone_number VARCHAR(15) NOT NULL UNIQUE,
     email VARCHAR(100) NOT NULL UNIQUE,
     birth_date VARCHAR(30),
-    work_type ENUM('Uzaktan', 'Evden', 'Hibrit'),
-    contract_type ENUM('Süreli', 'Süresiz'),
-    team ENUM('Java', 'Angular', 'C4C', 'Abap', 'DevOPS', 'Basis'),
+    work_type ENUM('UZAKTAN', 'EVDEN', 'HIBRIT'),
+    contract_type ENUM('SURELI', 'SURESIZ'),
+    team ENUM('JAVA', 'ANGULAR', 'C4C', 'ABAP', 'DEVOPS', 'BASIS'),
     start_date VARCHAR(30),
     end_date VARCHAR(30),
     personal_information_id INT,
@@ -32,9 +32,9 @@ CREATE TABLE personal_information (
     id INT AUTO_INCREMENT PRIMARY KEY,
     birth_day VARCHAR(30),
     national_id VARCHAR(11),
-    military_status ENUM('Tecilli', 'Muaf', 'Yapıldı', 'Görevde'),
-    gender ENUM('Erkek', 'Kadın', 'Diğer'),
-    marital_status ENUM('Evli', 'Bekar')
+    military_status ENUM('TECILLI', 'MUAF', 'YAPILDI', 'GOREVDE'),
+    gender ENUM('ERKEK', 'KADIN', 'DIGER'),
+    marital_status ENUM('EVLI', 'BEKAR')
 );
 CREATE TABLE other_information (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -47,7 +47,7 @@ CREATE TABLE other_information (
 CREATE TABLE project (
     project_id int AUTO_INCREMENT PRIMARY KEY,
     project_name VARCHAR(100),
-    project_type ENUM('Proje', 'Destek', 'İç Proje', 'IK', 'Satış', 'Ürün'),
+    project_type ENUM('PROJE', 'DESTEK', 'IC_PROJE', 'IK', 'SATIS', 'URUN'),
     department VARCHAR(100),
     vpn_username VARCHAR(100),
     vpn_password VARBINARY(256), -- Şifrelenmiş alan
@@ -63,9 +63,9 @@ CREATE TABLE manager (
     phone_number VARCHAR(15) NOT NULL UNIQUE,
     email VARCHAR(100) NOT NULL UNIQUE,
     birth_date VARCHAR(30),
-    work_type ENUM('Uzaktan', 'Evden', 'Hibrit'),
-    contract_type ENUM('Süreli', 'Süresiz'),
-    team ENUM('Java', 'Angular', 'C4C', 'Abap', 'DevOPS', 'Basis'),
+    work_type ENUM('UZAKTAN', 'EVDEN', 'HIBRIT'),
+    contract_type ENUM('SURELI', 'SURESIZ'),
+    team ENUM('JAVA', 'ANGULAR', 'C4C', 'ABAP', 'DEVOPS', 'BASIS'),
     start_date VARCHAR(30),
     end_date VARCHAR(30),
     personal_informations_id INT,
@@ -100,4 +100,13 @@ CREATE TABLE `employee_project` (
   PRIMARY KEY (`employee_id`,`project_id`),
   FOREIGN KEY (employee_id) REFERENCES employee(employee_id),
   FOREIGN KEY (project_id) REFERENCES project(project_id)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `manager_employee` (
+  `manager_id` int NOT NULL,
+  `employee_id` int NOT NULL,
+  
+  PRIMARY KEY (`manager_id`,`employee_id`),
+  FOREIGN KEY (employee_id) REFERENCES employee(employee_id),
+  FOREIGN KEY (manager_id) REFERENCES manager(manager_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
