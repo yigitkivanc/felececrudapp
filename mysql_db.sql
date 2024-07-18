@@ -1,112 +1,61 @@
-DROP SCHEMA IF EXISTS `felece-crud`;
+CREATE DATABASE employeedb;
 
-CREATE SCHEMA `felece-crud`;
+USE employeedb;
 
-use `felece-crud`;
-
-SET FOREIGN_KEY_CHECKS = 0;
-
-CREATE TABLE employee (
-    employee_id INT AUTO_INCREMENT PRIMARY KEY,
-    first_name VARCHAR(100) NOT NULL,
-    last_name VARCHAR(100) NOT NULL,
-    manager_id INT,
-    levell ENUM('L0', 'L1', 'L2', 'L3', 'L4', 'L5') ,
-    phone_number VARCHAR(15) NOT NULL UNIQUE,
-    email VARCHAR(100) NOT NULL UNIQUE,
-    birth_date VARCHAR(30),
-    work_type ENUM('UZAKTAN', 'EVDEN', 'HIBRIT'),
-    contract_type ENUM('SURELI', 'SURESIZ'),
-    team ENUM('JAVA', 'ANGULAR', 'C4C', 'ABAP', 'DEVOPS', 'BASIS'),
-    start_date VARCHAR(30),
-    end_date VARCHAR(30),
-    personal_information_id INT,
-    other_information_id INT,
-    project_id INT,
-    FOREIGN KEY (manager_id) REFERENCES manager(manager_id),
-    FOREIGN KEY (personal_information_id) REFERENCES personal_information(id),
-    FOREIGN KEY (other_information_id) REFERENCES other_information(id),
-    FOREIGN KEY (project_id) REFERENCES project(project_id)
-);
-CREATE TABLE personal_information (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    birth_day VARCHAR(30),
-    national_id VARCHAR(11),
-    military_status ENUM('TECILLI', 'MUAF', 'YAPILDI', 'GOREVDE'),
-    gender ENUM('ERKEK', 'KADIN', 'DIGER'),
-    marital_status ENUM('EVLI', 'BEKAR')
-);
-CREATE TABLE other_information (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    full_address VARCHAR(255),
-    bank_name VARCHAR(100),
-    iban VARCHAR(34),
-    emergency_contact_name VARCHAR(100),
-    emergency_contact_phone VARCHAR(15)
-);
-CREATE TABLE project (
-    project_id int AUTO_INCREMENT PRIMARY KEY,
-    project_name VARCHAR(100),
-    project_type ENUM('PROJE', 'DESTEK', 'IC_PROJE', 'IK', 'SATIS', 'URUN'),
-    department VARCHAR(100),
-    vpn_username VARCHAR(100),
-    vpn_password VARBINARY(256), -- Şifrelenmiş alan
-    environment_info VARCHAR(255)
-    
+CREATE TABLE PersonalInformation (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    birth_date DATE,
+    national_id VARCHAR(255) NOT NULL,
+    military_status ENUM('DEFERRED', 'EXEMPT', 'COMPLETED', 'SERVING'),
+    gender ENUM('MALE', 'FEMALE', 'OTHER'),
+    marital_status ENUM('MARRIED', 'SINGLE')
 );
 
-CREATE TABLE manager (
-    manager_id INT AUTO_INCREMENT PRIMARY KEY,
-    first_name VARCHAR(100) NOT NULL,
-    last_name VARCHAR(100) NOT NULL,
+CREATE TABLE OtherInformation (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    address VARCHAR(255) NOT NULL,
+    bank_name VARCHAR(255) NOT NULL,
+    iban VARCHAR(255) NOT NULL,
+    emergency_contact_name VARCHAR(255) NOT NULL,
+    emergency_contact_phone_number VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Employee (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
     levell ENUM('L0', 'L1', 'L2', 'L3', 'L4', 'L5'),
-    phone_number VARCHAR(15) NOT NULL UNIQUE,
-    email VARCHAR(100) NOT NULL UNIQUE,
-    birth_date VARCHAR(30),
-    work_type ENUM('UZAKTAN', 'EVDEN', 'HIBRIT'),
-    contract_type ENUM('SURELI', 'SURESIZ'),
+    phone_number VARCHAR(255) NOT NULL UNIQUE,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    manager_id BIGINT,
+    birth_date DATE,
+    work_type ENUM('REMOTE', 'OFFICE', 'HYBRID'),
+    contract_type ENUM('FIXED', 'PERMANENT'),
     team ENUM('JAVA', 'ANGULAR', 'C4C', 'ABAP', 'DEVOPS', 'BASIS'),
-    start_date VARCHAR(30),
-    end_date VARCHAR(30),
-    personal_informations_id INT,
-    other_informations_id INT,
-    project_id INT,
-    FOREIGN KEY (personal_informations_id) REFERENCES personal_information(id),
-    FOREIGN KEY (other_informations_id) REFERENCES other_information(id),
-	FOREIGN KEY (manager_id) REFERENCES employee(employee_id)
-
+    start_date DATE,
+    end_date DATE,
+    personal_information_id BIGINT,
+    other_information_id BIGINT,
+    CONSTRAINT FK_Manager FOREIGN KEY (manager_id) REFERENCES Manager(id),
+    CONSTRAINT FK_PersonalInformation FOREIGN KEY (personal_information_id) REFERENCES PersonalInformation(id),
+    CONSTRAINT FK_OtherInformation FOREIGN KEY (other_information_id) REFERENCES OtherInformation(id)
 );
-CREATE TABLE `manager_project` (
-  `manager_id` int NOT NULL,
-  `project_id` int NOT NULL,
-  
-  PRIMARY KEY (`manager_id`,`project_id`),
-  
-  KEY `FK_MANAGER_idx` (`manager_id`),
-  
-  CONSTRAINT `FK_PROJECT` FOREIGN KEY (`project_id`) 
-  REFERENCES `project` (`project_id`) 
-  ON DELETE NO ACTION ON UPDATE NO ACTION,
-  
-  CONSTRAINT `FK_MANAGER` FOREIGN KEY (`manager_id`) 
-  REFERENCES `manager` (`manager_id`) 
-  ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE `employee_project` (
-  `employee_id` int NOT NULL,
-  `project_id` int NOT NULL,
-  
-  PRIMARY KEY (`employee_id`,`project_id`),
-  FOREIGN KEY (employee_id) REFERENCES employee(employee_id),
-  FOREIGN KEY (project_id) REFERENCES project(project_id)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE Manager (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    employee_id BIGINT NOT NULL UNIQUE,
+    FOREIGN KEY (employee_id) REFERENCES Employee(id)
+);
 
-CREATE TABLE `manager_employee` (
-  `manager_id` int NOT NULL,
-  `employee_id` int NOT NULL,
-  
-  PRIMARY KEY (`manager_id`,`employee_id`),
-  FOREIGN KEY (employee_id) REFERENCES employee(employee_id),
-  FOREIGN KEY (manager_id) REFERENCES manager(manager_id)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE Project (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    project_name VARCHAR(255) NOT NULL,
+    project_type ENUM('PROJECT', 'SUPPORT', 'INTERNAL_PROJECT', 'HR', 'SALES', 'PRODUCT'),
+    department VARCHAR(255) NOT NULL,
+    vpn_username VARCHAR(255) NOT NULL,
+    vpn_password VARCHAR(255) NOT NULL,
+    environment_details VARCHAR(255) NOT NULL,
+    employee_id BIGINT,
+    CONSTRAINT FK_EmployeeProject FOREIGN KEY (employee_id) REFERENCES Employee(id)
+);
+

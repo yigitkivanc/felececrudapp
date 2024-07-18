@@ -1,49 +1,48 @@
 package com.felececrud.felececrudapp.service;
 
-import com.felececrud.felececrudapp.dao.EmployeeRepository;
+import com.felececrud.felececrudapp.dto.EmployeeDTO;
 import com.felececrud.felececrudapp.entity.Employee;
+import com.felececrud.felececrudapp.jparepository.EmployeeRepository;
+import com.felececrud.felececrudapp.mapper.EntityMapper;
+import com.felececrud.felececrudapp.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
-public class EmployeeServiceImpl implements EmployeeService{
+public class EmployeeServiceImpl implements EmployeeService {
+
+    @Autowired
     private EmployeeRepository employeeRepository;
 
     @Autowired
-    public EmployeeServiceImpl(EmployeeRepository theEmployeeRepository) {
-        employeeRepository = theEmployeeRepository;
+    private EntityMapper entityMapper;
+
+    @Override
+    public EmployeeDTO saveEmployee(EmployeeDTO employeeDTO) {
+        Employee employee = entityMapper.toEmployee(employeeDTO);
+        Employee savedEmployee = employeeRepository.save(employee);
+        return entityMapper.toEmployeeDTO(savedEmployee);
     }
 
     @Override
-    public List<Employee> findAll() {
-        return employeeRepository.findAll();
+    public List<EmployeeDTO> getAllEmployees() {
+        return employeeRepository.findAll().stream()
+                .map(entityMapper::toEmployeeDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Employee findById(int theId) {
-        Optional<Employee> result = employeeRepository.findById(theId);
-        Employee theEmployee = null;
-
-        if(result.isPresent()){
-            theEmployee = result.get();
-        }else {
-            // if we can not find the employee
-            throw new RuntimeException("Did not find employee id - " + theId);
-        }
-
-        return theEmployee;
+    public EmployeeDTO getEmployeeById(Long id) {
+        return employeeRepository.findById(Math.toIntExact(id))
+                .map(entityMapper::toEmployeeDTO)
+                .orElse(null);
     }
 
     @Override
-    public Employee save(Employee theEmployee) {
-        return employeeRepository.save(theEmployee);
-    }
-
-    @Override
-    public void deleteById(int theId) {
-        employeeRepository.deleteById(theId);
+    public void deleteEmployee(Long id) {
+        employeeRepository.deleteById(Math.toIntExact(id));
     }
 }

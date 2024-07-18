@@ -1,4 +1,4 @@
-package com.felececrud.felececrudapp.dao;
+package com.felececrud.felececrudapp.jparepository;
 
 import com.felececrud.felececrudapp.entity.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;

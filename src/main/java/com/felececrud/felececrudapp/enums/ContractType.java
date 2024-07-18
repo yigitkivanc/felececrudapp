@@ -4,5 +4,4 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
 public enum ContractType {
-    SURELI,SURESIZ;
-}
+    FIXED, PERMANENT;}
