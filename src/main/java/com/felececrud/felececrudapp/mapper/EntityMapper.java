@@ -10,11 +10,40 @@ import com.felececrud.felececrudapp.entity.PersonalInformation;
 import com.felececrud.felececrudapp.entity.Project;
 import com.felececrud.felececrudapp.enums.*;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
 public class EntityMapper {
+    public Employee toEmployee(EmployeeDTO dto) {
+        if (dto == null) {
+            return null;
+        }
+
+        Employee employee = new Employee();
+        employee.setId(dto.getId());
+        employee.setFirstName(dto.getFirstName());
+        employee.setLastName(dto.getLastName());
+        employee.setManager(dto.getManagerId() != null ? new Employee(dto.getManagerId()) : null); // Assuming Employee has a constructor with id
+        employee.setLevel(Level.valueOf(dto.getLevel()));
+        employee.setPhoneNumber(dto.getPhoneNumber());
+        employee.setEmail(dto.getEmail());
+        employee.setBirthDate(dto.getBirthDate());
+        employee.setWorkType(WorkType.valueOf(dto.getWorkType()));
+        employee.setContractType(ContractType.valueOf(dto.getContractType()));
+        employee.setTeam(Team.valueOf(dto.getTeam()));
+        employee.setStartDate(dto.getStartDate());
+        employee.setEndDate(dto.getEndDate());
+        employee.setPersonalInformation(toPersonalInformation(dto.getPersonalInformation()));
+        employee.setOtherInformation(toOtherInformation(dto.getOtherInformation()));
+        if(!CollectionUtils.isEmpty(dto.getProjects())){
+            employee.setProjects(dto.getProjects().stream().map(this::toProject).collect(Collectors.toList()));
+        }
+        return employee;
+    }
+
 
     public EmployeeDTO toEmployeeDTO(Employee employee) {
         if (employee == null) {
@@ -37,35 +66,11 @@ public class EntityMapper {
         dto.setEndDate(employee.getEndDate());
         dto.setPersonalInformation(toPersonalInformationDTO(employee.getPersonalInformation()));
         dto.setOtherInformation(toOtherInformationDTO(employee.getOtherInformation()));
-        dto.setProjects(employee.getProjects().stream().map(this::toProjectDTO).collect(Collectors.toList()));
+        if(!CollectionUtils.isEmpty(employee.getProjects())){
+            dto.setProjects(employee.getProjects().stream().map(this::toProjectDTO).collect(Collectors.toList()));
 
-        return dto;
-    }
-
-    public Employee toEmployee(EmployeeDTO dto) {
-        if (dto == null) {
-            return null;
         }
-
-        Employee employee = new Employee();
-        employee.setId(dto.getId());
-        employee.setFirstName(dto.getFirstName());
-        employee.setLastName(dto.getLastName());
-        employee.setManager(dto.getManagerId() != null ? new Employee(dto.getManagerId()) : null); // Assuming Employee has a constructor with id
-        employee.setLevel(Level.valueOf(dto.getLevel()));
-        employee.setPhoneNumber(dto.getPhoneNumber());
-        employee.setEmail(dto.getEmail());
-        employee.setBirthDate(dto.getBirthDate());
-        employee.setWorkType(WorkType.valueOf(dto.getWorkType()));
-        employee.setContractType(ContractType.valueOf(dto.getContractType()));
-        employee.setTeam(Team.valueOf(dto.getTeam()));
-        employee.setStartDate(dto.getStartDate());
-        employee.setEndDate(dto.getEndDate());
-        employee.setPersonalInformation(toPersonalInformation(dto.getPersonalInformation()));
-        employee.setOtherInformation(toOtherInformation(dto.getOtherInformation()));
-        employee.setProjects(dto.getProjects().stream().map(this::toProject).collect(Collectors.toList()));
-
-        return employee;
+        return dto;
     }
 
     public PersonalInformationDTO toPersonalInformationDTO(PersonalInformation personalInformation) {
