@@ -59,3 +59,4 @@ CREATE TABLE Project (
     CONSTRAINT FK_EmployeeProject FOREIGN KEY (employee_id) REFERENCES Employee(id)
 );
 
+ 
