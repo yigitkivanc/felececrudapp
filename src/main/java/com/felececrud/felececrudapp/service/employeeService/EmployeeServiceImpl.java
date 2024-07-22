@@ -1,4 +1,4 @@
-package com.felececrud.felececrudapp.service;
+package com.felececrud.felececrudapp.service.employeeService;
 
 import com.felececrud.felececrudapp.dto.EmployeeDTO;
 import com.felececrud.felececrudapp.dto.OtherInformationDTO;
@@ -11,7 +11,6 @@ import com.felececrud.felececrudapp.entity.Project;
 import com.felececrud.felececrudapp.enums.*;
 import com.felececrud.felececrudapp.jparepository.EmployeeRepository;
 import com.felececrud.felececrudapp.mapper.EntityMapper;
-import com.felececrud.felececrudapp.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

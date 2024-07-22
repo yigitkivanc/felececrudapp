@@ -78,9 +78,13 @@ public class Employee {
     @JoinColumn(name = "other_information_id", referencedColumnName = "id")
     private OtherInformation otherInformation;
 
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+    @ManyToMany
+    @JoinTable(
+            name = "employee_project",
+            joinColumns = @JoinColumn(name = "employee_id"),
+            inverseJoinColumns = @JoinColumn(name = "project_id")
+    )
     private List<Project> projects;
-
 
     public Employee(Long employeeId) {
         this.id = employeeId;

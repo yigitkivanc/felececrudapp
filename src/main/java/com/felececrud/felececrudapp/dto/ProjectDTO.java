@@ -1,6 +1,9 @@
 package com.felececrud.felececrudapp.dto;
 
+import com.felececrud.felececrudapp.entity.Employee;
 import lombok.*;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -16,5 +19,7 @@ public class ProjectDTO {
     private String vpnPassword;
     private String environmentDetails;
     private Long employeeId;
-
+    private Employee manager;
+    private List<Long> employeeIds;
+    private Long managerId;
 }

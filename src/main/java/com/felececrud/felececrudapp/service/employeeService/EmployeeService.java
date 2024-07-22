@@ -1,4 +1,4 @@
-package com.felececrud.felececrudapp.service;
+package com.felececrud.felececrudapp.service.employeeService;
 
 import com.felececrud.felececrudapp.dto.EmployeeDTO;
 

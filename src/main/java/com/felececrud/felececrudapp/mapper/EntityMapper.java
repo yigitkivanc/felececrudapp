@@ -9,6 +9,8 @@ import com.felececrud.felececrudapp.entity.OtherInformation;
 import com.felececrud.felececrudapp.entity.PersonalInformation;
 import com.felececrud.felececrudapp.entity.Project;
 import com.felececrud.felececrudapp.enums.*;
+import com.felececrud.felececrudapp.jparepository.EmployeeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -17,6 +19,8 @@ import java.util.stream.Collectors;
 
 @Component
 public class EntityMapper {
+    @Autowired
+    private EmployeeRepository employeeRepository;
     public Employee toEmployee(EmployeeDTO dto) {
         if (dto == null) {
             return null;
@@ -150,16 +154,12 @@ public class EntityMapper {
         dto.setVpnUsername(project.getVpnUsername());
         dto.setVpnPassword(project.getVpnPassword());
         dto.setEnvironmentDetails(project.getEnvironmentDetails());
-        dto.setEmployeeId(project.getEmployee() != null ? project.getEmployee().getId() : null);
+        dto.setEmployeeId(project.getEmployees() != null ? project.getEmployees().stream().count() : null);
 
         return dto;
     }
 
     public Project toProject(ProjectDTO dto) {
-        if (dto == null) {
-            return null;
-        }
-
         Project project = new Project();
         project.setId(dto.getId());
         project.setProjectName(dto.getProjectName());
@@ -168,7 +168,20 @@ public class EntityMapper {
         project.setVpnUsername(dto.getVpnUsername());
         project.setVpnPassword(dto.getVpnPassword());
         project.setEnvironmentDetails(dto.getEnvironmentDetails());
-        project.setEmployee(dto.getEmployeeId() != null ? new Employee(dto.getEmployeeId()) : null); // Assuming Employee has a constructor with id
+
+        if (dto.getEmployeeIds() != null) {
+            List<Employee> employees = dto.getEmployeeIds().stream()
+                    .map(id -> employeeRepository.findById(Math.toIntExact(id))
+                            .orElseThrow(() -> new IllegalArgumentException("Employee not found")))
+                    .collect(Collectors.toList());
+            project.setEmployees(employees);
+        }
+
+        if (dto.getManagerId() != null) {
+            Employee manager = employeeRepository.findById(Math.toIntExact(dto.getManagerId()))
+                    .orElseThrow(() -> new IllegalArgumentException("Manager not found"));
+            project.setManager(manager);
+        }
 
         return project;
     }

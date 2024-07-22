@@ -1,7 +1,7 @@
 package com.felececrud.felececrudapp.controller;
 
 import com.felececrud.felececrudapp.dto.EmployeeDTO;
-import com.felececrud.felececrudapp.service.EmployeeService;
+import com.felececrud.felececrudapp.service.employeeService.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
