@@ -19,7 +19,6 @@ public class ProjectDTO {
     private String vpnPassword;
     private String environmentDetails;
     private Long employeeId;
-    private Employee manager;
     private List<Long> employeeIds;
     private Long managerId;
 }

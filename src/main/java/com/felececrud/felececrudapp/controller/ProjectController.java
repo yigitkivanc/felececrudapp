@@ -4,6 +4,7 @@ import com.felececrud.felececrudapp.dto.EmployeeDTO;
 import com.felececrud.felececrudapp.dto.EmployeesAndManagerDTO;
 import com.felececrud.felececrudapp.dto.ProjectDTO;
 import com.felececrud.felececrudapp.request.AddEmployeesAndManagerRequest;
+import com.felececrud.felececrudapp.request.AssignManagerRequest;
 import com.felececrud.felececrudapp.service.projectService.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -56,5 +57,10 @@ public class ProjectController {
                 request.getEmployeeIds(),
                 request.getManagerId());
     }
+    @PostMapping("/{projectId}/assignManager")
+    public ProjectDTO assignProjectToManager(@PathVariable Long projectId, @RequestBody AssignManagerRequest request) {
+        return projectService.assignProjectToManager(projectId, request.getManagerId());
+    }
+
 }
 

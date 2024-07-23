@@ -118,5 +118,17 @@ public class EmployeeServiceImpl implements EmployeeService {
         return entityMapper.toEmployeeDTO(savedEmployee);
     }
 
+    @Override
+    public EmployeeDTO assignManagerToEmployee(Long employeeId, Long managerId) {
+        Employee employee = employeeRepository.findById(Math.toIntExact(employeeId))
+                .orElseThrow(() -> new IllegalArgumentException("Employee not found"));
+        Employee manager = employeeRepository.findById(Math.toIntExact(managerId))
+                .orElseThrow(() -> new IllegalArgumentException("Manager not found"));
+
+        employee.setManager(manager);
+        Employee updatedEmployee = employeeRepository.save(employee);
+        return entityMapper.toEmployeeDTO(updatedEmployee);
+    }
+
 }
 

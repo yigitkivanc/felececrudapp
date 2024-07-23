@@ -155,7 +155,7 @@ public class EntityMapper {
         dto.setVpnPassword(project.getVpnPassword());
         dto.setEnvironmentDetails(project.getEnvironmentDetails());
         dto.setEmployeeIds(project.getEmployees() != null ? project.getEmployees().stream().map(Employee::getId).collect(Collectors.toList()) : null) ;
-
+        dto.setManagerId(project.getManager().getId());
         return dto;
     }
 

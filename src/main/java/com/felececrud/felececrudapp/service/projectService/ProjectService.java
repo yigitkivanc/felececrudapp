@@ -13,4 +13,6 @@ public interface ProjectService {
     List<ProjectDTO> getAllProjects();
     List<EmployeeDTO> getEmployeesByProjectId(Long projectId);
     ProjectDTO addEmployeesAndManagerToProject(Long projectId, List<Long> employeeIds, Long managerId);
+    ProjectDTO assignProjectToManager(Long projectId, Long managerId);
+
 }

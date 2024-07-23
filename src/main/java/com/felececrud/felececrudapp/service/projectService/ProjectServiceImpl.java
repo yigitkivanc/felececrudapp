@@ -3,6 +3,7 @@ package com.felececrud.felececrudapp.service.projectService;
 import com.felececrud.felececrudapp.dto.EmployeeDTO;
 import com.felececrud.felececrudapp.dto.ProjectDTO;
 import com.felececrud.felececrudapp.entity.Employee;
+import com.felececrud.felececrudapp.entity.Manager;
 import com.felececrud.felececrudapp.entity.Project;
 import com.felececrud.felececrudapp.enums.ProjectType;
 import com.felececrud.felececrudapp.jparepository.EmployeeRepository;
@@ -11,6 +12,7 @@ import com.felececrud.felececrudapp.mapper.EntityMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -119,4 +121,28 @@ public class ProjectServiceImpl implements ProjectService {
         Project savedProject = projectRepository.save(project);
         return entityMapper.toProjectDTO(savedProject);
     }
-}
+
+    @Override
+    public ProjectDTO assignProjectToManager(Long projectId, Long managerId) {
+        Project project = projectRepository.findById(Math.toIntExact(projectId))
+                .orElseThrow(() -> new IllegalArgumentException("Project not found"));
+
+        Employee manager = employeeRepository.findById(Math.toIntExact(managerId))
+                .orElseThrow(() -> new IllegalArgumentException("Manager not found"));
+
+        project.setManager(manager);
+
+        if (manager.getProjects() == null) {
+            manager.setProjects(new ArrayList<>());
+        }
+        manager.getProjects().add(project);
+
+        project = projectRepository.save(project);
+        employeeRepository.save(manager);
+
+        return entityMapper.toProjectDTO(project);
+    }
+    }
+
+
+

@@ -37,4 +37,10 @@ public class EmployeeController {
     public void deleteEmployee(@PathVariable Long id) {
         employeeService.deleteEmployee(id);
     }
+    @PostMapping("/{employeeId}/assignManager/{managerId}")
+    public EmployeeDTO assignManagerToEmployee(@PathVariable Long employeeId, @PathVariable Long managerId) {
+        return employeeService.assignManagerToEmployee(employeeId, managerId);
+    }
+
+
 }
