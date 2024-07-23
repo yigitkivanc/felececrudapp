@@ -142,7 +142,7 @@ public class ProjectServiceImpl implements ProjectService {
 
         return entityMapper.toProjectDTO(project);
     }
-    }
+}
 
 
 

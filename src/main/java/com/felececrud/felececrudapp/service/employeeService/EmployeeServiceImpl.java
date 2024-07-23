@@ -57,17 +57,15 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee existingEmployee = employeeRepository.findById(Math.toIntExact(employeeId))
                 .orElseThrow(() -> new IllegalArgumentException("Employee not found"));
 
-        // Update the fields of the existing employee with new values from updatedEmployeeDTO
         existingEmployee.setFirstName(updatedEmployeeDTO.getFirstName());
         existingEmployee.setLastName(updatedEmployeeDTO.getLastName());
 
-        // Handle manager, assuming managerId is provided in the DTO
         if (updatedEmployeeDTO.getManagerId() != null) {
             Employee manager = employeeRepository.findById(Math.toIntExact(updatedEmployeeDTO.getManagerId()))
                     .orElseThrow(() -> new IllegalArgumentException("Manager not found"));
             existingEmployee.setManager(manager);
         } else {
-            existingEmployee.setManager(null); // Handle case where manager is set to null
+            existingEmployee.setManager(null);
         }
 
         existingEmployee.setLevel(Level.valueOf(updatedEmployeeDTO.getLevel()));
@@ -80,7 +78,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         existingEmployee.setStartDate(updatedEmployeeDTO.getStartDate());
         existingEmployee.setEndDate(updatedEmployeeDTO.getEndDate());
 
-        // Update PersonalInformation
+
         if (existingEmployee.getPersonalInformation() == null) {
             existingEmployee.setPersonalInformation(new PersonalInformation());
         }
@@ -91,7 +89,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         existingEmployee.getPersonalInformation().setGender(Gender.valueOf(personalInfoDTO.getGender()));
         existingEmployee.getPersonalInformation().setMaritalStatus(MaritalStatus.valueOf(personalInfoDTO.getMaritalStatus()));
 
-        // Update OtherInformation
+
         if (existingEmployee.getOtherInformation() == null) {
             existingEmployee.setOtherInformation(new OtherInformation());
         }
@@ -102,7 +100,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         existingEmployee.getOtherInformation().setEmergencyContactName(otherInfoDTO.getEmergencyContactName());
         existingEmployee.getOtherInformation().setEmergencyContactPhoneNumber(otherInfoDTO.getEmergencyContactPhoneNumber());
 
-        // Update Projects
+
         List<ProjectDTO> projects = updatedEmployeeDTO.getProjects();
         if (projects != null) {
             List<Project> updatedProjects = projects.stream()
@@ -111,10 +109,10 @@ public class EmployeeServiceImpl implements EmployeeService {
             existingEmployee.setProjects(updatedProjects);
         }
 
-        // Save the updated employee back to the repository
+
         Employee savedEmployee = employeeRepository.save(existingEmployee);
 
-        // Convert saved employee entity back to DTO
+
         return entityMapper.toEmployeeDTO(savedEmployee);
     }
 
