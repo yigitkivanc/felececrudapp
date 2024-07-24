@@ -8,6 +8,7 @@ import com.felececrud.felececrudapp.enums.ProjectType;
 import com.felececrud.felececrudapp.jparepository.EmployeeRepository;
 import com.felececrud.felececrudapp.jparepository.ProjectRepository;
 import com.felececrud.felececrudapp.mapper.EntityMapper;
+import com.felececrud.felececrudapp.validation.DuplicateFieldException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,8 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectDTO createProject(ProjectDTO projectDTO) {
+        validateUniqueFieldsByProjectName(projectDTO, null);
+        validateUniqueFieldsByVpnUsername(projectDTO,null);
         Project project = entityMapper.toProject(projectDTO);
         Project savedProject = projectRepository.save(project);
         return entityMapper.toProjectDTO(savedProject);
@@ -45,6 +48,9 @@ public class ProjectServiceImpl implements ProjectService {
     public ProjectDTO updateProject(Long projectId, ProjectDTO projectDTO) {
         Project existingProject = projectRepository.findById(Math.toIntExact(projectId))
                 .orElseThrow(() -> new IllegalArgumentException("Project not found"));
+
+        validateUniqueFieldsByVpnUsername(projectDTO, existingProject);
+
 
         existingProject.setProjectName(projectDTO.getProjectName());
         existingProject.setProjectType(ProjectType.valueOf(projectDTO.getProjectType()));
@@ -140,6 +146,19 @@ public class ProjectServiceImpl implements ProjectService {
         employeeRepository.save(manager);
 
         return entityMapper.toProjectDTO(project);
+    }
+
+    private void validateUniqueFieldsByProjectName(ProjectDTO projectDTO, Project existingProject) {
+        if ((existingProject == null || !projectDTO.getProjectName().equals(existingProject.getProjectName())) &&
+                projectRepository.existsByProjectName(projectDTO.getProjectName())) {
+            throw new DuplicateFieldException("Project name already exists");
+        }
+    }
+    private void validateUniqueFieldsByVpnUsername(ProjectDTO projectDTO, Project existingProject){
+        if ((existingProject == null || !projectDTO.getVpnUsername().equals(existingProject.getVpnUsername())) &&
+                projectRepository.existsByVpnUsername(projectDTO.getVpnUsername())) {
+            throw new DuplicateFieldException("VPN username already exists");
+        }
     }
 }
 

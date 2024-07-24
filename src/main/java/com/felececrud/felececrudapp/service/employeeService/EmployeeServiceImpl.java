@@ -10,7 +10,10 @@ import com.felececrud.felececrudapp.entity.PersonalInformation;
 import com.felececrud.felececrudapp.entity.Project;
 import com.felececrud.felececrudapp.enums.*;
 import com.felececrud.felececrudapp.jparepository.EmployeeRepository;
+import com.felececrud.felececrudapp.jparepository.OtherInformationRepository;
+import com.felececrud.felececrudapp.jparepository.PersonalInformationRepository;
 import com.felececrud.felececrudapp.mapper.EntityMapper;
+import com.felececrud.felececrudapp.validation.DuplicateFieldException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +26,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
+    @Autowired
+    private PersonalInformationRepository personalInformationRepository;
+
+    @Autowired
+    private OtherInformationRepository otherInformationRepository;
     @Autowired
     private EntityMapper entityMapper;
 
@@ -57,6 +65,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee existingEmployee = employeeRepository.findById(Math.toIntExact(employeeId))
                 .orElseThrow(() -> new IllegalArgumentException("Employee not found"));
 
+        validateUniqueFields(updatedEmployeeDTO, existingEmployee);
         existingEmployee.setFirstName(updatedEmployeeDTO.getFirstName());
         existingEmployee.setLastName(updatedEmployeeDTO.getLastName());
 
@@ -128,6 +137,28 @@ public class EmployeeServiceImpl implements EmployeeService {
         return entityMapper.toEmployeeDTO(updatedEmployee);
     }
 
+    private void validateUniqueFields(EmployeeDTO employeeDTO, Employee existingEmployee) {
+        if (!employeeDTO.getPhoneNumber().equals(existingEmployee.getPhoneNumber()) &&
+                employeeRepository.existsByPhoneNumber(employeeDTO.getPhoneNumber())) {
+            throw new DuplicateFieldException("Phone number already exists");
+        }
 
+        if (!employeeDTO.getEmail().equals(existingEmployee.getEmail()) &&
+                employeeRepository.existsByEmail(employeeDTO.getEmail())) {
+            throw new DuplicateFieldException("Email address already exists");
+        }
+
+        if (employeeDTO.getPersonalInformation() != null &&
+                !employeeDTO.getPersonalInformation().getNationalId().equals(existingEmployee.getPersonalInformation().getNationalId()) &&
+                personalInformationRepository.existsByNationalId(employeeDTO.getPersonalInformation().getNationalId())) {
+            throw new DuplicateFieldException("National ID already exists");
+        }
+
+        if (employeeDTO.getOtherInformation() != null &&
+                !employeeDTO.getOtherInformation().getIban().equals(existingEmployee.getOtherInformation().getIban()) &&
+                otherInformationRepository.existsByIban(employeeDTO.getOtherInformation().getIban())) {
+            throw new DuplicateFieldException("IBAN already exists");
+        }
+    }
 }
 
