@@ -13,4 +13,6 @@ public interface EmployeeService {
     EmployeeDTO updateEmployee(Long employeeId, EmployeeDTO updatedEmployeeDTO);
 
     EmployeeDTO assignManagerToEmployee(Long employeeId, Long managerId);
+
+
 }
