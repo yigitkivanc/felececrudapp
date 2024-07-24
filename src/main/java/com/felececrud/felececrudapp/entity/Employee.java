@@ -8,6 +8,7 @@ import com.felececrud.felececrudapp.enums.Level;
 import com.felececrud.felececrudapp.enums.Team;
 import com.felececrud.felececrudapp.enums.WorkType;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,6 +31,7 @@ public class Employee {
     private Long id;
 
     @Column(name = "first_name")
+    @NotBlank(message = "Name can not be empty")
     private String firstName;
 
     @Column(name = "last_name")

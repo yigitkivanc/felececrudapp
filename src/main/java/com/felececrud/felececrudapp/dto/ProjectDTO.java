@@ -1,6 +1,7 @@
 package com.felececrud.felececrudapp.dto;
 
 import com.felececrud.felececrudapp.entity.Employee;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.util.List;
@@ -12,11 +13,28 @@ import java.util.List;
 @AllArgsConstructor
 public class ProjectDTO {
     private Long id;
+
+    @NotBlank(message = "Project name is required")
     private String projectName;
+
+
+    @NotBlank(message = "Project type is required")
     private String projectType;
+
+
+    @NotBlank(message = "Department is required")
     private String department;
+
+
+    @NotBlank(message = "VPN username is required")
     private String vpnUsername;
+
+
+    @NotBlank(message = "VPN password is required")
     private String vpnPassword;
+
+
+    @NotBlank(message = "Environment is required")
     private String environmentDetails;
     private Long employeeId;
     private List<Long> employeeIds;

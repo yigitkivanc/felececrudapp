@@ -6,6 +6,7 @@ import com.felececrud.felececrudapp.dto.ProjectDTO;
 import com.felececrud.felececrudapp.request.AddEmployeesAndManagerRequest;
 import com.felececrud.felececrudapp.request.AssignManagerRequest;
 import com.felececrud.felececrudapp.service.projectService.ProjectService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +20,7 @@ public class ProjectController {
     private ProjectService projectService;
 
     @PostMapping("/createProject")
-    public ProjectDTO createProject(@RequestBody ProjectDTO projectDTO) {
+    public ProjectDTO createProject(@Valid @RequestBody ProjectDTO projectDTO) {
         return projectService.createProject(projectDTO);
     }
 
@@ -29,7 +30,7 @@ public class ProjectController {
     }
 
     @PutMapping("/updateProject/{projectId}")
-    public ProjectDTO updateProject(@PathVariable Long projectId, @RequestBody ProjectDTO projectDTO) {
+    public ProjectDTO updateProject(@PathVariable Long projectId, @Valid @RequestBody ProjectDTO projectDTO) {
         return projectService.updateProject(projectId, projectDTO);
     }
 
@@ -51,14 +52,14 @@ public class ProjectController {
     @PostMapping("/{projectId}/addEmployeesAndManager")
     public ProjectDTO addEmployeesAndManagerToProject(
             @PathVariable Long projectId,
-            @RequestBody AddEmployeesAndManagerRequest request) {
+            @Valid @RequestBody AddEmployeesAndManagerRequest request) {
         return projectService.addEmployeesAndManagerToProject(
                 projectId,
                 request.getEmployeeIds(),
                 request.getManagerId());
     }
     @PostMapping("/{projectId}/assignManager")
-    public ProjectDTO assignProjectToManager(@PathVariable Long projectId, @RequestBody AssignManagerRequest request) {
+    public ProjectDTO assignProjectToManager(@PathVariable Long projectId, @Valid@RequestBody AssignManagerRequest request) {
         return projectService.assignProjectToManager(projectId, request.getManagerId());
     }
 

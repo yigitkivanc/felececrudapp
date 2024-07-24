@@ -3,7 +3,6 @@ package com.felececrud.felececrudapp.service.projectService;
 import com.felececrud.felececrudapp.dto.EmployeeDTO;
 import com.felececrud.felececrudapp.dto.ProjectDTO;
 import com.felececrud.felececrudapp.entity.Employee;
-import com.felececrud.felececrudapp.entity.Manager;
 import com.felececrud.felececrudapp.entity.Project;
 import com.felececrud.felececrudapp.enums.ProjectType;
 import com.felececrud.felececrudapp.jparepository.EmployeeRepository;

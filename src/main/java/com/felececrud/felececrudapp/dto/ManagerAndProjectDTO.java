@@ -1,5 +1,6 @@
 package com.felececrud.felececrudapp.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 @Getter
 @Setter
@@ -7,5 +8,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ManagerAndProjectDTO {
+        @NotNull(message = "Manager ID is required")
         private Long managerId;
 }
