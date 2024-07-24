@@ -4,9 +4,13 @@ This project is an internship project at Felece, designed to manage employee dat
 
 # Features
  Employee Management: Add, update, and manage employee details including personal and other information.
+ 
  Manager Assignment: Assign managers to employees and manage hierarchical relationships.
+ 
  Project Management: Create and update projects, and assign employees and managers to projects.
+ 
  Data Validation: Ensures unique fields like phone numbers, email addresses, project names, and VPN usernames.
+ 
  Database Integration: Uses MySQL for data persistence with proper entity relationships and validations.
 
 
