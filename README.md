@@ -16,11 +16,17 @@ This project is an internship project at Felece, designed to manage employee dat
 
 # Technologies Used
  Java Spring Boot: Backend framework.
+ 
  Spring Data JPA: For database interactions.
+ 
  Hibernate: ORM tool.
+ 
  MySQL: Relational database.
+ 
  Maven: Dependency management.
+ 
  DTOs and Mappers: For data transfer and mapping between entities and DTOs.
+ 
  Validations: Ensuring data integrity and uniqueness.
 
 
@@ -29,18 +35,29 @@ This project is an internship project at Felece, designed to manage employee dat
 # Employee Endpoints
 
  Create Employee: POST /api/employees/createEmployee
+ 
  Update Employee: PUT /api/employees/updateEmployee/{id}
+ 
  Get Employee by ID: GET /api/employees//listEmployees/{id}
+ 
  Get All Employees: GET /api/employees/listEmployees
+ 
  Delete Employee: DELETE /api/employees/deleteEmployee/{id}
+ 
  Assign Manager To Employee: POST /api/employees/{employeeId}/assignManager/{managerId}
 
 # Project Endpoints
 
  Create Project: POST /api/projects/createProject
+ 
  Update Project: PUT /api/projects/updateProject/{id}
+ 
  Get Project by ID: GET /api/projects/{id}
+ 
  Get All Projects: GET /api/projects/listProjects
+ 
  Delete Project: DELETE /api/projects/deleteProject/{id}
+ 
  Add Employees and Manager to Project: POST /api/projects/{projectId}/addEmployeesAndManager
+ 
  Assign Project to Manager: POST /api/projects/{projectId}/assignManager
