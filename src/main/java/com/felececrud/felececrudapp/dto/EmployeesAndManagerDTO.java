@@ -1,5 +1,7 @@
 package com.felececrud.felececrudapp.dto;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.List;
@@ -10,8 +12,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EmployeesAndManagerDTO {
+    @NotEmpty(message = "Employee IDs are required")
     private List<Long> employeeIds;
-    private Long managerId;
 
+    @NotNull(message = "Manager ID is required")
+    private Long managerId;
 
 }
