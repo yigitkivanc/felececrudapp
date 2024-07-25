@@ -19,7 +19,7 @@ This project is an internship project at Felece, designed to manage employee dat
  
  Spring Data JPA: For database interactions.
  
- Hibernate: ORM tool.
+ Hibernate: ORM (Object-Relational Mapping) tool.
  
  MySQL: Relational database.
  
