@@ -3,6 +3,7 @@ package com.felececrud.felececrudapp.controller;
 import com.felececrud.felececrudapp.dto.EmployeeDTO;
 import com.felececrud.felececrudapp.dto.EmployeesAndManagerDTO;
 import com.felececrud.felececrudapp.dto.ProjectDTO;
+import com.felececrud.felececrudapp.filterRequest.ProjectFilterRequest;
 import com.felececrud.felececrudapp.request.AddEmployeesAndManagerRequest;
 import com.felececrud.felececrudapp.request.AssignManagerRequest;
 import com.felececrud.felececrudapp.service.projectService.ProjectService;
@@ -61,6 +62,11 @@ public class ProjectController {
     @PostMapping("/{projectId}/assignManager")
     public ProjectDTO assignProjectToManager(@PathVariable Long projectId, @Valid@RequestBody AssignManagerRequest request) {
         return projectService.assignProjectToManager(projectId, request.getManagerId());
+    }
+
+    @PostMapping("/filter")
+    public List<ProjectDTO> filterProjects(@Valid @RequestBody ProjectFilterRequest filterRequest) {
+        return projectService.filterProjects(filterRequest);
     }
 
 }

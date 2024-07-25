@@ -5,11 +5,14 @@ import com.felececrud.felececrudapp.dto.ProjectDTO;
 import com.felececrud.felececrudapp.entity.Employee;
 import com.felececrud.felececrudapp.entity.Project;
 import com.felececrud.felececrudapp.enums.ProjectType;
+import com.felececrud.felececrudapp.filterRequest.ProjectFilterRequest;
 import com.felececrud.felececrudapp.jparepository.EmployeeRepository;
 import com.felececrud.felececrudapp.jparepository.ProjectRepository;
 import com.felececrud.felececrudapp.mapper.EntityMapper;
+import com.felececrud.felececrudapp.specifications.ProjectSpecification;
 import com.felececrud.felececrudapp.validation.DuplicateFieldException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -146,6 +149,15 @@ public class ProjectServiceImpl implements ProjectService {
         employeeRepository.save(manager);
 
         return entityMapper.toProjectDTO(project);
+    }
+
+    @Override
+    public List<ProjectDTO> filterProjects(ProjectFilterRequest filterRequest) {
+        Specification<Project> spec = ProjectSpecification.filter(filterRequest);
+        List<Project> projects = projectRepository.findAll(spec);
+        return projects.stream()
+                .map(entityMapper::toProjectDTO)
+                .collect(Collectors.toList());
     }
 
     private void validateUniqueFieldsByProjectName(ProjectDTO projectDTO, Project existingProject) {

@@ -9,12 +9,15 @@ import com.felececrud.felececrudapp.entity.OtherInformation;
 import com.felececrud.felececrudapp.entity.PersonalInformation;
 import com.felececrud.felececrudapp.entity.Project;
 import com.felececrud.felececrudapp.enums.*;
+import com.felececrud.felececrudapp.filterRequest.EmployeeFilterRequest;
 import com.felececrud.felececrudapp.jparepository.EmployeeRepository;
 import com.felececrud.felececrudapp.jparepository.OtherInformationRepository;
 import com.felececrud.felececrudapp.jparepository.PersonalInformationRepository;
 import com.felececrud.felececrudapp.mapper.EntityMapper;
+import com.felececrud.felececrudapp.specifications.EmployeeSpecification;
 import com.felececrud.felececrudapp.validation.DuplicateFieldException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -135,6 +138,15 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setManager(manager);
         Employee updatedEmployee = employeeRepository.save(employee);
         return entityMapper.toEmployeeDTO(updatedEmployee);
+    }
+
+    @Override
+    public List<EmployeeDTO> filterEmployees(EmployeeFilterRequest filterRequest) {
+        Specification<Employee> spec = EmployeeSpecification.filter(filterRequest);
+        List<Employee> employees = employeeRepository.findAll(spec);
+        return employees.stream()
+                .map(entityMapper::toEmployeeDTO)
+                .collect(Collectors.toList());
     }
 
     private void validateUniqueFields(EmployeeDTO employeeDTO, Employee existingEmployee) {

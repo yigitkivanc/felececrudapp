@@ -3,6 +3,7 @@ package com.felececrud.felececrudapp.controller;
 import com.felececrud.felececrudapp.dto.EmployeeDTO;
 import com.felececrud.felececrudapp.entity.Employee;
 import com.felececrud.felececrudapp.entity.PersonalInformation;
+import com.felececrud.felececrudapp.filterRequest.EmployeeFilterRequest;
 import com.felececrud.felececrudapp.jparepository.EmployeeRepository;
 import com.felececrud.felececrudapp.jparepository.OtherInformationRepository;
 import com.felececrud.felececrudapp.jparepository.PersonalInformationRepository;
@@ -64,6 +65,11 @@ public class EmployeeController {
     @PostMapping("/{employeeId}/assignManager/{managerId}")
     public EmployeeDTO assignManagerToEmployee(@PathVariable Long employeeId, @PathVariable Long managerId) {
         return employeeService.assignManagerToEmployee(employeeId, managerId);
+    }
+
+    @PostMapping("/filter")
+    public List<EmployeeDTO> filterEmployees(@Valid @RequestBody EmployeeFilterRequest filterRequest) {
+        return employeeService.filterEmployees(filterRequest);
     }
     private void validateUniqueFields(EmployeeDTO employeeDTO) {
         if (employeeRepository.existsByPhoneNumber(employeeDTO.getPhoneNumber())) {
