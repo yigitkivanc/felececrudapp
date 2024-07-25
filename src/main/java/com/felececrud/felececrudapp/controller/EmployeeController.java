@@ -36,10 +36,8 @@ public class EmployeeController {
 
     @PostMapping("/createEmployee")
     public EmployeeDTO createEmployee(@Valid @RequestBody EmployeeDTO employeeDTO) {
-        validateUniqueFields(employeeDTO);
-        Employee employee = entityMapper.toEmployee(employeeDTO);
-        employee = employeeRepository.save(employee);
-        return entityMapper.toEmployeeDTO(employee);
+        EmployeeDTO employee = employeeService.saveEmployee(employeeDTO);
+        return employee;
     }
 
     @GetMapping("/listEmployees")
@@ -71,20 +69,7 @@ public class EmployeeController {
     public List<EmployeeDTO> filterEmployees(@Valid @RequestBody EmployeeFilterRequest filterRequest) {
         return employeeService.filterEmployees(filterRequest);
     }
-    private void validateUniqueFields(EmployeeDTO employeeDTO) {
-        if (employeeRepository.existsByPhoneNumber(employeeDTO.getPhoneNumber())) {
-            throw new DuplicateFieldException("Phone number already exists");
-        }
-        if (employeeRepository.existsByEmail(employeeDTO.getEmail())) {
-            throw new DuplicateFieldException("Email address already exists");
-        }
-        if (personalInformationRepository.existsByNationalId(employeeDTO.getPersonalInformation().getNationalId())){
-            throw new DuplicateFieldException("National ID already exists");
-        }
-        if (otherInformationRepository.existsByIban(employeeDTO.getOtherInformation().getIban())){
-            throw new DuplicateFieldException("IBAN already exist");
-        }
-    }
+
 
 
 

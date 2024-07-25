@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 public class ProjectFilterRequest {
     private String projectName;
-    private ProjectType projectType;
+    private String projectType;
     private String department;
     private String vpnUsername;
     private String vpnPassword;

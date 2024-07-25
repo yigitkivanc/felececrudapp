@@ -18,10 +18,10 @@ public class EmployeeFilterRequest {
     private String phoneNumber;
     private String email;
     private Date birthDate;
-    private Level level;
-    private WorkType workType;
-    private ContractType contractType;
-    private Team team;
+    private String level;
+    private String workType;
+    private String contractType;
+    private String team;
     private Date startDate;
     private Date endDate;
 

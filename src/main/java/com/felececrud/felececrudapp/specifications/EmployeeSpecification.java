@@ -1,5 +1,9 @@
 package com.felececrud.felececrudapp.specifications;
 
+import com.felececrud.felececrudapp.enums.ContractType;
+import com.felececrud.felececrudapp.enums.Level;
+import com.felececrud.felececrudapp.enums.Team;
+import com.felececrud.felececrudapp.enums.WorkType;
 import com.felececrud.felececrudapp.filterRequest.EmployeeFilterRequest;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -17,11 +21,11 @@ public class EmployeeSpecification {
                 Predicate predicate = cb.conjunction();
 
                 if (filterRequest.getFirstName() != null) {
-                    predicate = cb.and(predicate, cb.equal(root.get("firstName"), filterRequest.getFirstName()));
+                    predicate = cb.and(predicate, cb.like(cb.lower(root.get("firstName")), "%" + filterRequest.getFirstName().toLowerCase() + "%"));
                 }
 
                 if (filterRequest.getLastName() != null) {
-                    predicate = cb.and(predicate, cb.equal(root.get("lastName"), filterRequest.getLastName()));
+                    predicate = cb.and(predicate, cb.like(cb.lower(root.get("lastName")), "%" + filterRequest.getLastName().toLowerCase() + "%"));
                 }
 
                 if (filterRequest.getPhoneNumber() != null) {
@@ -37,19 +41,23 @@ public class EmployeeSpecification {
                 }
 
                 if (filterRequest.getLevel() != null) {
-                    predicate = cb.and(predicate, cb.equal(root.get("level"), filterRequest.getLevel()));
+                    Level level = Level.valueOf(filterRequest.getLevel());
+                    predicate = cb.and(predicate, cb.equal(root.get("level"), level));
                 }
 
                 if (filterRequest.getWorkType() != null) {
-                    predicate = cb.and(predicate, cb.equal(root.get("workType"), filterRequest.getWorkType()));
+                    WorkType workType = WorkType.valueOf(filterRequest.getWorkType());
+                    predicate = cb.and(predicate, cb.equal(root.get("workType"), workType));
                 }
 
                 if (filterRequest.getContractType() != null) {
-                    predicate = cb.and(predicate, cb.equal(root.get("contractType"), filterRequest.getContractType()));
+                    ContractType contractType = ContractType.valueOf(filterRequest.getContractType());
+                    predicate = cb.and(predicate, cb.equal(root.get("contractType"), contractType));
                 }
 
                 if (filterRequest.getTeam() != null) {
-                    predicate = cb.and(predicate, cb.equal(root.get("team"), filterRequest.getTeam()));
+                    Team team = Team.valueOf(filterRequest.getTeam());
+                    predicate = cb.and(predicate, cb.equal(root.get("team"), team));
                 }
 
                 if (filterRequest.getStartDate() != null) {

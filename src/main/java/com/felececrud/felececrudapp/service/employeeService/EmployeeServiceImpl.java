@@ -39,6 +39,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeDTO saveEmployee(EmployeeDTO employeeDTO) {
+        validateUniqueFieldsForCreate(employeeDTO);
         Employee employee = entityMapper.toEmployee(employeeDTO);
         Employee savedEmployee = employeeRepository.save(employee);
         return entityMapper.toEmployeeDTO(savedEmployee);
@@ -68,7 +69,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee existingEmployee = employeeRepository.findById(Math.toIntExact(employeeId))
                 .orElseThrow(() -> new IllegalArgumentException("Employee not found"));
 
-        validateUniqueFields(updatedEmployeeDTO, existingEmployee);
+        validateUniqueFieldsForUpdate(updatedEmployeeDTO, existingEmployee);
         existingEmployee.setFirstName(updatedEmployeeDTO.getFirstName());
         existingEmployee.setLastName(updatedEmployeeDTO.getLastName());
 
@@ -149,7 +150,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .collect(Collectors.toList());
     }
 
-    private void validateUniqueFields(EmployeeDTO employeeDTO, Employee existingEmployee) {
+    private void validateUniqueFieldsForUpdate(EmployeeDTO employeeDTO, Employee existingEmployee) {
         if (!employeeDTO.getPhoneNumber().equals(existingEmployee.getPhoneNumber()) &&
                 employeeRepository.existsByPhoneNumber(employeeDTO.getPhoneNumber())) {
             throw new DuplicateFieldException("Phone number already exists");
@@ -170,6 +171,20 @@ public class EmployeeServiceImpl implements EmployeeService {
                 !employeeDTO.getOtherInformation().getIban().equals(existingEmployee.getOtherInformation().getIban()) &&
                 otherInformationRepository.existsByIban(employeeDTO.getOtherInformation().getIban())) {
             throw new DuplicateFieldException("IBAN already exists");
+        }
+    }
+    private void validateUniqueFieldsForCreate(EmployeeDTO employeeDTO) {
+        if (employeeRepository.existsByPhoneNumber(employeeDTO.getPhoneNumber())) {
+            throw new DuplicateFieldException("Phone number already exists");
+        }
+        if (employeeRepository.existsByEmail(employeeDTO.getEmail())) {
+            throw new DuplicateFieldException("Email address already exists");
+        }
+        if (personalInformationRepository.existsByNationalId(employeeDTO.getPersonalInformation().getNationalId())){
+            throw new DuplicateFieldException("National ID already exists");
+        }
+        if (otherInformationRepository.existsByIban(employeeDTO.getOtherInformation().getIban())){
+            throw new DuplicateFieldException("IBAN already exist");
         }
     }
 }

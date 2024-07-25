@@ -17,7 +17,7 @@ public class ProjectSpecification {
                 Predicate predicate = cb.conjunction();
 
                 if (filterRequest.getProjectName() != null) {
-                    predicate = cb.and(predicate, cb.equal(root.get("projectName"), filterRequest.getProjectName()));
+                    predicate = cb.and(predicate, cb.like(cb.lower(root.get("projectName")), "%" + filterRequest.getProjectName().toLowerCase() + "%"));
                 }
 
                 if (filterRequest.getProjectType() != null) {
@@ -25,7 +25,7 @@ public class ProjectSpecification {
                 }
 
                 if (filterRequest.getDepartment() != null) {
-                    predicate = cb.and(predicate, cb.equal(root.get("department"), filterRequest.getDepartment()));
+                    predicate = cb.and(predicate, cb.like(cb.lower(root.get("department")), "%" + filterRequest.getDepartment().toLowerCase() + "%"));
                 }
 
                 if (filterRequest.getVpnUsername() != null) {
@@ -37,7 +37,7 @@ public class ProjectSpecification {
                 }
 
                 if (filterRequest.getEnvironmentDetails() != null) {
-                    predicate = cb.and(predicate, cb.equal(root.get("environmentDetails"), filterRequest.getEnvironmentDetails()));
+                    predicate = cb.and(predicate, cb.like(cb.lower(root.get("environmentDetails")), "%" + filterRequest.getEnvironmentDetails().toLowerCase() + "%"));
                 }
 
                 if (filterRequest.getEmployeeId() != null) {
