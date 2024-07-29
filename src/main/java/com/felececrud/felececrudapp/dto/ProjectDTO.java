@@ -36,7 +36,6 @@ public class ProjectDTO {
 
     @NotBlank(message = "Environment is required")
     private String environmentDetails;
-    private Long employeeId;
     private List<Long> employeeIds;
     private Long managerId;
 }

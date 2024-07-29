@@ -36,8 +36,7 @@ public class EmployeeController {
 
     @PostMapping("/createEmployee")
     public EmployeeDTO createEmployee(@Valid @RequestBody EmployeeDTO employeeDTO) {
-        EmployeeDTO employee = employeeService.saveEmployee(employeeDTO);
-        return employee;
+        return employeeService.saveEmployee(employeeDTO);
     }
 
     @GetMapping("/listEmployees")
