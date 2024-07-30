@@ -152,6 +152,16 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<EmployeeDTO> getSubordinates(Long managerId) {
+        Employee manager = employeeRepository.findById(Math.toIntExact(managerId))
+                .orElseThrow(() -> new RuntimeException("Manager not found"));
+        List<Employee> subordinates = employeeRepository.findByManager(manager);
+        return subordinates.stream()
+                .map(entityMapper::toEmployeeDTO)
+                .collect(Collectors.toList());
+    }
+
     private void validateUniqueFieldsForUpdate(EmployeeDTO employeeDTO, Employee existingEmployee) {
         if (!employeeDTO.getPhoneNumber().equals(existingEmployee.getPhoneNumber()) &&
                 employeeRepository.existsByPhoneNumber(employeeDTO.getPhoneNumber())) {

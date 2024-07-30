@@ -17,4 +17,5 @@ public interface EmployeeService {
 
     public List<EmployeeDTO> filterEmployees(EmployeeFilterRequest filterRequest);
 
+    List<EmployeeDTO> getSubordinates(Long managerId);
 }

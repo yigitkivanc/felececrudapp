@@ -69,7 +69,10 @@ public class EmployeeController {
         return employeeService.filterEmployees(filterRequest);
     }
 
-
+    @GetMapping("/managers/{managerId}/subordinates")
+    public List<EmployeeDTO> getSubordinates(@PathVariable Long managerId) {
+        return employeeService.getSubordinates(managerId);
+    }
 
 
 }
