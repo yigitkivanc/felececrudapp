@@ -21,4 +21,6 @@ public interface EmployeeService {
     List<EmployeeDTO> getSubordinates(Long managerId);
 
     List<EmployeeProjectionDTO> getAllEmployeeProjections();
+
+    void removeEmployeesFromProject(Long projectId, List<Long> employeeIds);
 }

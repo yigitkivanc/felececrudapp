@@ -6,6 +6,7 @@ import com.felececrud.felececrudapp.dto.ProjectDTO;
 import com.felececrud.felececrudapp.filterRequest.ProjectFilterRequest;
 import com.felececrud.felececrudapp.request.AddEmployeesAndManagerRequest;
 import com.felececrud.felececrudapp.request.AssignManagerRequest;
+import com.felececrud.felececrudapp.service.employeeService.EmployeeService;
 import com.felececrud.felececrudapp.service.projectService.ProjectService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,8 @@ public class ProjectController {
 
     @Autowired
     private ProjectService projectService;
-
+    @Autowired
+    private EmployeeService employeeService;
     @PostMapping("/createProject")
     public ProjectDTO createProject(@Valid @RequestBody ProjectDTO projectDTO) {
         return projectService.createProject(projectDTO);
@@ -68,6 +70,8 @@ public class ProjectController {
     public List<ProjectDTO> filterProjects(@Valid @RequestBody ProjectFilterRequest filterRequest) {
         return projectService.filterProjects(filterRequest);
     }
+
+
 
 }
 

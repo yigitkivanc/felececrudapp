@@ -10,10 +10,12 @@ import com.felececrud.felececrudapp.filterRequest.EmployeeFilterRequest;
 import com.felececrud.felececrudapp.jparepository.EmployeeRepository;
 import com.felececrud.felececrudapp.jparepository.OtherInformationRepository;
 import com.felececrud.felececrudapp.jparepository.PersonalInformationRepository;
+import com.felececrud.felececrudapp.jparepository.ProjectRepository;
 import com.felececrud.felececrudapp.mapper.EntityMapper;
 import com.felececrud.felececrudapp.projections.EmployeeProjection;
 import com.felececrud.felececrudapp.specifications.EmployeeSpecification;
 import com.felececrud.felececrudapp.validation.DuplicateFieldException;
+import com.felececrud.felececrudapp.validation.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -33,6 +35,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
     private OtherInformationRepository otherInformationRepository;
+    @Autowired
+    private ProjectRepository projectRepository;
     @Autowired
     private EntityMapper entityMapper;
 
@@ -165,6 +169,23 @@ public class EmployeeServiceImpl implements EmployeeService {
         List<EmployeeProjection> projections = employeeRepository.findAllEmployeeProjections();
         return projections.stream()
                 .map(entityMapper::projectionToEmployeeProjectionDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public void removeEmployeesFromProject(Long projectId, List<Long> employeeIds) {
+        Project project = projectRepository.findById(Math.toIntExact(projectId))
+                .orElseThrow(() -> new ResourceNotFoundException("Project not found"));
+
+        List<Employee> employeesToRemove = employeeIds.stream()
+                .map(id -> employeeRepository.findById(Math.toIntExact(id))
+                        .orElseThrow(() -> new ResourceNotFoundException("Employee not found")))
+                .collect(Collectors.toList());
+        if (project.getManager() != null && employeeIds.contains(project.getManager().getId())) {
+            project.setManager(null);
+        }
+
+        project.getEmployees().removeAll(employeesToRemove);
+        projectRepository.save(project);
     }
 
     private void validateUniqueFieldsForUpdate(EmployeeDTO employeeDTO, Employee existingEmployee) {
