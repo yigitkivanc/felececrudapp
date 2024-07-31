@@ -1,9 +1,6 @@
 package com.felececrud.felececrudapp.service.employeeService;
 
-import com.felececrud.felececrudapp.dto.EmployeeDTO;
-import com.felececrud.felececrudapp.dto.OtherInformationDTO;
-import com.felececrud.felececrudapp.dto.PersonalInformationDTO;
-import com.felececrud.felececrudapp.dto.ProjectDTO;
+import com.felececrud.felececrudapp.dto.*;
 import com.felececrud.felececrudapp.entity.Employee;
 import com.felececrud.felececrudapp.entity.OtherInformation;
 import com.felececrud.felececrudapp.entity.PersonalInformation;
@@ -14,6 +11,7 @@ import com.felececrud.felececrudapp.jparepository.EmployeeRepository;
 import com.felececrud.felececrudapp.jparepository.OtherInformationRepository;
 import com.felececrud.felececrudapp.jparepository.PersonalInformationRepository;
 import com.felececrud.felececrudapp.mapper.EntityMapper;
+import com.felececrud.felececrudapp.projections.EmployeeProjection;
 import com.felececrud.felececrudapp.specifications.EmployeeSpecification;
 import com.felececrud.felececrudapp.validation.DuplicateFieldException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -160,6 +158,13 @@ public class EmployeeServiceImpl implements EmployeeService {
         return subordinates.stream()
                 .map(entityMapper::toEmployeeDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<EmployeeProjectionDTO> getAllEmployeeProjections() {
+        List<EmployeeProjection> projections = employeeRepository.findAllEmployeeProjections();
+        return projections.stream()
+                .map(entityMapper::projectionToEmployeeProjectionDTO).collect(Collectors.toList());
     }
 
     private void validateUniqueFieldsForUpdate(EmployeeDTO employeeDTO, Employee existingEmployee) {

@@ -1,15 +1,13 @@
 package com.felececrud.felececrudapp.mapper;
 
-import com.felececrud.felececrudapp.dto.EmployeeDTO;
-import com.felececrud.felececrudapp.dto.OtherInformationDTO;
-import com.felececrud.felececrudapp.dto.PersonalInformationDTO;
-import com.felececrud.felececrudapp.dto.ProjectDTO;
+import com.felececrud.felececrudapp.dto.*;
 import com.felececrud.felececrudapp.entity.Employee;
 import com.felececrud.felececrudapp.entity.OtherInformation;
 import com.felececrud.felececrudapp.entity.PersonalInformation;
 import com.felececrud.felececrudapp.entity.Project;
 import com.felececrud.felececrudapp.enums.*;
 import com.felececrud.felececrudapp.jparepository.EmployeeRepository;
+import com.felececrud.felececrudapp.projections.EmployeeProjection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -154,8 +152,17 @@ public class EntityMapper {
         dto.setVpnUsername(project.getVpnUsername());
         dto.setVpnPassword(project.getVpnPassword());
         dto.setEnvironmentDetails(project.getEnvironmentDetails());
-        dto.setEmployeeIds(project.getEmployees() != null ? project.getEmployees().stream().map(Employee::getId).collect(Collectors.toList()) : null) ;
-        dto.setManagerId(project.getManager().getId());
+        if (project.getEmployees() != null) {
+            List<Long> employeeIds = project.getEmployees().stream()
+                    .map(Employee::getId)
+                    .collect(Collectors.toList());
+            dto.setEmployeeIds(employeeIds);
+        }
+
+        if (project.getManager() != null) {
+            dto.setManagerId(project.getManager().getId());
+        }
+
         return dto;
     }
 
@@ -184,5 +191,14 @@ public class EntityMapper {
         }
 
         return project;
+    }
+
+    public EmployeeProjectionDTO projectionToEmployeeProjectionDTO(EmployeeProjection projection) {
+        EmployeeProjectionDTO dto = new EmployeeProjectionDTO();
+        dto.setId(projection.getId());
+        dto.setFullName(projection.getFullName());
+        dto.setOtherInformation(projection.getOtherInformation());
+        dto.setPersonalInformation(projection.getPersonalInformation());
+        return dto;
     }
 }

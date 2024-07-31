@@ -1,6 +1,7 @@
 package com.felececrud.felececrudapp.service.employeeService;
 
 import com.felececrud.felececrudapp.dto.EmployeeDTO;
+import com.felececrud.felececrudapp.dto.EmployeeProjectionDTO;
 import com.felececrud.felececrudapp.filterRequest.EmployeeFilterRequest;
 
 import java.util.List;
@@ -18,4 +19,6 @@ public interface EmployeeService {
     public List<EmployeeDTO> filterEmployees(EmployeeFilterRequest filterRequest);
 
     List<EmployeeDTO> getSubordinates(Long managerId);
+
+    List<EmployeeProjectionDTO> getAllEmployeeProjections();
 }

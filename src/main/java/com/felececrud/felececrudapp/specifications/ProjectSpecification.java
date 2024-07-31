@@ -1,5 +1,6 @@
 package com.felececrud.felececrudapp.specifications;
 
+import com.felececrud.felececrudapp.enums.ProjectType;
 import com.felececrud.felececrudapp.filterRequest.ProjectFilterRequest;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -21,8 +22,10 @@ public class ProjectSpecification {
                 }
 
                 if (filterRequest.getProjectType() != null) {
-                    predicate = cb.and(predicate, cb.equal(root.get("projectType"), filterRequest.getProjectType()));
+                    ProjectType projectType = ProjectType.valueOf(filterRequest.getProjectType());
+                    predicate = cb.and(predicate, cb.equal(root.get("projectType"), projectType));
                 }
+
 
                 if (filterRequest.getDepartment() != null) {
                     predicate = cb.and(predicate, cb.like(cb.lower(root.get("department")), "%" + filterRequest.getDepartment().toLowerCase() + "%"));

@@ -1,6 +1,7 @@
 package com.felececrud.felececrudapp.controller;
 
 import com.felececrud.felececrudapp.dto.EmployeeDTO;
+import com.felececrud.felececrudapp.dto.EmployeeProjectionDTO;
 import com.felececrud.felececrudapp.entity.Employee;
 import com.felececrud.felececrudapp.entity.PersonalInformation;
 import com.felececrud.felececrudapp.filterRequest.EmployeeFilterRequest;
@@ -74,5 +75,9 @@ public class EmployeeController {
         return employeeService.getSubordinates(managerId);
     }
 
+    @GetMapping("/projections")
+    public List<EmployeeProjectionDTO> getAllEmployeeProjections(){
+        return employeeService.getAllEmployeeProjections();
+    }
 
 }
