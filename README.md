@@ -46,6 +46,17 @@ This project is an internship project at Felece, designed to manage employee dat
  
  Assign Manager To Employee: POST /api/employees/{employeeId}/assignManager/{managerId}
 
+ Employee Filter: POST /api/employees/filter
+
+ List of Subordinates of Manager: GET /api/employees/managers/{managerId}/subordinates
+
+ Employee Projection: GET /api/employees/projections
+
+ Employee Projection By ID: GET /api/employees/projections/{id}
+
+ Remove Employees (Also Manager, which is an employee) From Project: POST /api/employees/{projectId}/removeEmployees
+ 
+
 # Project Endpoints
 
  Create Project: POST /api/projects/createProject
@@ -61,3 +72,5 @@ This project is an internship project at Felece, designed to manage employee dat
  Add Employees and Manager to Project: POST /api/projects/{projectId}/addEmployeesAndManager
  
  Assign Project to Manager: POST /api/projects/{projectId}/assignManager
+
+ Project Filter: POST /api/projects/filter
