@@ -22,5 +22,7 @@ public interface EmployeeService {
 
     List<EmployeeProjectionDTO> getAllEmployeeProjections();
 
+    EmployeeProjectionDTO getEmployeeProjectionById(Long id);
+
     void removeEmployeesFromProject(Long projectId, List<Long> employeeIds);
 }

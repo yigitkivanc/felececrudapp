@@ -15,4 +15,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer>, Jp
 
     @Query("SELECT e.id as id, CONCAT(e.firstName, ' ', e.lastName) as fullName, e.otherInformation as otherInformation, e.personalInformation as personalInformation FROM Employee e")
     List<EmployeeProjection> findAllEmployeeProjections();
+
+    @Query("SELECT e.id as id, CONCAT(e.firstName, ' ', e.lastName) as fullName, e.otherInformation as otherInformation, e.personalInformation as personalInformation FROM Employee e WHERE e.id = :id")
+    EmployeeProjection findEmployeeProjectionById(Long id);
 }

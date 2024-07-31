@@ -80,6 +80,11 @@ public class EmployeeController {
         return employeeService.getAllEmployeeProjections();
     }
 
+    @GetMapping("/projections/{id}")
+    public EmployeeProjectionDTO getEmployeeProjectionById(@PathVariable Long id){
+        return employeeService.getEmployeeProjectionById(id);
+    }
+
     @PostMapping("/{projectId}/removeEmployees")
     public void removeEmployeesFromProject(@PathVariable Long projectId, @RequestBody List<Long> employeeIds) {
         employeeService.removeEmployeesFromProject(projectId, employeeIds);

@@ -172,6 +172,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public EmployeeProjectionDTO getEmployeeProjectionById(Long id) {
+        EmployeeProjection theProjection = employeeRepository.findEmployeeProjectionById(id);
+        return entityMapper.projectionToEmployeeProjectionDTO(theProjection);
+    }
+
+    @Override
     public void removeEmployeesFromProject(Long projectId, List<Long> employeeIds) {
         Project project = projectRepository.findById(Math.toIntExact(projectId))
                 .orElseThrow(() -> new ResourceNotFoundException("Project not found"));
