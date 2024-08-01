@@ -13,11 +13,11 @@ This project is an internship project at Felece, designed to manage employee dat
  
  Database Integration: Uses MySQL for data persistence with proper entity relationships and validations.
 
- Specifications
+ Specifications:
     -Dynamic Query Building: Utilize Spring Data JPA Specifications to create dynamic and type-safe queries for fetching data from the database based on various criteria.
     -Flexible Filtering: Enable advanced filtering capabilities for entities using specifications, allowing for complex query conditions.
  
- Projections
+ Projections:
     -Selective Data Retrieval: Use Spring Data JPA Projections to fetch only the required parts of entities, improving performance by reducing the amount of data transferred.
     -Custom Views: Create custom views of entity data directly from the repository layer, providing tailored responses for different use cases.
 
