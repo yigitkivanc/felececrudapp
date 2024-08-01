@@ -85,10 +85,7 @@ public class EmployeeController {
         return employeeService.getEmployeeProjectionById(id);
     }
 
-    @PostMapping("/{projectId}/removeEmployees")
-    public void removeEmployeesFromProject(@PathVariable Long projectId, @RequestBody List<Long> employeeIds) {
-        employeeService.removeEmployeesFromProject(projectId, employeeIds);
-    }
+
 
 
 }

@@ -71,7 +71,10 @@ public class ProjectController {
         return projectService.filterProjects(filterRequest);
     }
 
-
+    @PostMapping("/{projectId}/removeEmployees")
+    public void removeEmployeesFromProject(@PathVariable Long projectId, @RequestBody List<Long> employeeIds) {
+        employeeService.removeEmployeesFromProject(projectId, employeeIds);
+    }
 
 }
 
