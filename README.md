@@ -58,7 +58,6 @@ This project is an internship project at Felece, designed to manage employee dat
 
  Employee Projection By ID: GET /api/employees/projections/{id}
 
- Remove Employees (Also Manager, which is an employee) From Project: POST /api/employees/{projectId}/removeEmployees
  
 
 # Project Endpoints
@@ -74,6 +73,8 @@ This project is an internship project at Felece, designed to manage employee dat
  Delete Project: DELETE /api/projects/deleteProject/{id}
  
  Add Employees and Manager to Project: POST /api/projects/{projectId}/addEmployeesAndManager
+
+ Remove Employees (Also Manager, which is an employee) From Project: POST /api/projects/{projectId}/removeEmployees
  
  Assign Project to Manager: POST /api/projects/{projectId}/assignManager
 
