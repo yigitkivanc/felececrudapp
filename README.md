@@ -29,6 +29,10 @@ This project is an internship project at Felece, designed to manage employee dat
  
  Validations: Ensuring data integrity and uniqueness.
 
+ Specifications: For dynamically building database queries using the criteria API.
+ 
+ Projections: For fetching partial views of entities directly from the repository layer.
+
 
 # Endpoints
 
