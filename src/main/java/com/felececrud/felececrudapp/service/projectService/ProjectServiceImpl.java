@@ -51,7 +51,7 @@ public class ProjectServiceImpl implements ProjectService {
     public ProjectDTO updateProject(Long projectId, ProjectDTO projectDTO) {
         Project existingProject = projectRepository.findById(Math.toIntExact(projectId))
                 .orElseThrow(() -> new IllegalArgumentException("Project not found"));
-
+        validateUniqueFieldsByProjectName(projectDTO, existingProject);
         validateUniqueFieldsByVpnUsername(projectDTO, existingProject);
 
 
